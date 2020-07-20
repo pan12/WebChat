@@ -3,6 +3,7 @@ using Share.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using WebChat.Models;
 
@@ -18,21 +19,14 @@ namespace WebChat.Repositories
 
         public Message AddMessage(Message message)
         {
-            message.PostedTime = DateTime.UtcNow;
             _webChatContext.Messages.Add(message);
             return message;
             
         }
 
-        public Message GetMessage(int id)
+        public IEnumerable<Message> GetMessages(Expression<Func<Message, bool>> predicate)
         {
-            return _webChatContext.Messages.Find(id);
-        }
-
-        public IQueryable<Message> GetMessagesInLastMin()
-        {
-            var time = DateTime.UtcNow.AddMinutes(-1);
-            return _webChatContext.Messages.Where(m => m.PostedTime > time);
+            return _webChatContext.Messages.Where(predicate);
         }
 
         public async Task SaveChangesAsync()
