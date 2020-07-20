@@ -8,10 +8,10 @@ using WebChat.Models;
 
 namespace Share.Interfaces
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
         User AddUser(User user);
-        IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate);
+        IQueryable<User> GetUsers(Expression<Func<User, bool>> predicate);
         User RemoveUser(User user);
         Task SaveChangesAsync();
     }

@@ -8,10 +8,10 @@ using WebChat.Models;
 
 namespace Share.Interfaces
 {
-    interface IChatRepository
+    public interface IChatRepository
     {
         Message AddMessage(Message message);
-        IEnumerable<Message> GetMessages(Expression<Func<Message, bool>> predicate);
+        IQueryable<Message> GetMessages(Expression<Func<Message, bool>> predicate);
         Task SaveChangesAsync();
     }
 }

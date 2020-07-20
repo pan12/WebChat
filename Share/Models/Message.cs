@@ -11,7 +11,7 @@ namespace WebChat.Models
         public int Id { get; set; }
         public string Text { get; set; }
         [Required]
-        public DateTime PostedTime { get; set; }
+        public DateTime PostedTimeUTC { get; set; }
         [Required]
         public User Sender { get; set; }
     }

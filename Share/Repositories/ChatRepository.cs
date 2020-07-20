@@ -24,7 +24,7 @@ namespace WebChat.Repositories
             
         }
 
-        public IEnumerable<Message> GetMessages(Expression<Func<Message, bool>> predicate)
+        public IQueryable<Message> GetMessages(Expression<Func<Message, bool>> predicate)
         {
             return _webChatContext.Messages.Where(predicate);
         }

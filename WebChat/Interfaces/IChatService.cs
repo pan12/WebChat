@@ -8,7 +8,7 @@ namespace WebChat
 {
     interface IChatService
     {
-        Task<Message> AddMessage(string text);
+        Task<Message> AddMessage(Message message);
         Task<Message> GetMessage(int messageId);
         Task<List<Message>> GetMessagesByUser(int userId);
         Task<List<Message>> GetMessagesInLastMin();

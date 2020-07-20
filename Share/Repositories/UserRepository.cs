@@ -23,7 +23,7 @@ namespace Share.Repositories
             return user;
         }
 
-        public IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate)
+        public IQueryable<User> GetUsers(Expression<Func<User, bool>> predicate)
         {
             return _webChatContext.Users.Where(predicate);
         }
