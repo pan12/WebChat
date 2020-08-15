@@ -28,6 +28,7 @@ namespace WebChat
         {
             services.AddDbContext<WebChatContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("WebChatConnection")));
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,10 +39,14 @@ namespace WebChat
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<WebChatHub>("/chat");
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
