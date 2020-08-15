@@ -3,36 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebChat.Models;
+using Share.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebChat.Services
 {
     public class ChatService : IChatService
     {
-        IChatService _chatRepository;
+        IChatRepository _chatRepository;
         
-        public ChatService()
+        public ChatService(IChatRepository chatRepository)
         {
-
+            _chatRepository = chatRepository;
         }
 
-        public Task<Message> AddMessage(string text)
+        public async Task<Message> AddMessage(Message message)
         {
-            throw new NotImplementedException();
+            message.PostedTimeUTC = DateTime.UtcNow;
+            message = _chatRepository.AddMessage(message);
+            await _chatRepository.SaveChangesAsync();
+            return message;
         }
 
-        public Task<Message> GetMessage(int messageId)
+        public async Task<Message> GetMessage(int messageId)
         {
-            throw new NotImplementedException();
+            var message = await _chatRepository.GetMessages(m => m.Id == messageId).FirstOrDefaultAsync();
+            return message;
         }
 
-        public Task<List<Message>> GetMessagesByUser(int userId)
+        public async Task<List<Message>> GetMessagesByUser(int userId)
         {
-            throw new NotImplementedException();
+            var messages = await _chatRepository.GetMessages(m => m.Sender.Id == userId).ToListAsync();
+            return messages;
         }
 
-        public Task<List<Message>> GetMessagesInLastMin()
+        public async Task<List<Message>> GetMessagesInLastMin()
         {
-            throw new NotImplementedException();
+            var time = DateTime.UtcNow.AddMinutes(-1);
+            var messages = await _chatRepository.GetMessages(m => m.PostedTimeUTC >= time).ToListAsync();
+            return messages;
         }
     }
 }

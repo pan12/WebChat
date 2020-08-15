@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using WebChat.Models;
@@ -22,21 +23,14 @@ namespace Share.Repositories
             return user;
         }
 
-        public User GetUser(int id)
+        public IQueryable<User> GetUsers(Expression<Func<User, bool>> predicate)
         {
-            return _webChatContext.Users.Find(id);
+            return _webChatContext.Users.Where(predicate);
         }
 
-        public IQueryable<User> GetUsers()
+        public User RemoveUser(User user)
         {
-            return _webChatContext.Users.AsQueryable();
-        }
-
-        public User RemoveUser(int id)
-        {
-            var user = _webChatContext.Users.Find(id);
-            if (user != null)
-                _webChatContext.Users.Remove(user);
+            _webChatContext.Users.Remove(user);
             return user;
         }
 
